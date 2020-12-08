@@ -3,6 +3,7 @@ package dormitories
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 )
 
 type Student struct {
@@ -28,6 +29,6 @@ func (s *Store) ListDormitories() ([]*Dormitory, error) {
 }
 
 func (s *Store) AddStudent(specialty string) error {
-
+	err := fmt.Errorf("")
 	return err
 }
