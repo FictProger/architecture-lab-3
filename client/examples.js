@@ -4,23 +4,28 @@ const channels = require('./channels/client');
 
 const client = channels.Client('http://localhost:8080');
 
-// Scenario 1: Get recommended dormitory for selected speciality.
-client.findDormitory()
-    .then(() => {
-        console.log('=== Scenario 1 ===');
-        console.log('Recommended dormitory:');
+(async () => {
+    // Scenario 1: Get recommended dormitory for selected speciality.
+    console.log('=== Scenario 1 ===');
+    let dormitoryID;
+    try {
+        const { id, studentsCount } = await client.findDormitory('biology');
+        dormitoryID = id;
+        console.log('Recommended dormitory:', id);
+        console.table(studentsCount);
 
-    })
-    .catch((e) => {
+    } catch (e) {
         console.log(` ${e.message}`);
-    });
+    };
 
-// Scenario 2: Make record where the student was settled.
-client.createChannel()
-    .then(() => {
-        console.log('=== Scenario 2 ===');
-        console.log('');
-    })
-    .catch((e) => {
+    // Scenario 2: Make record where the student was settled.
+    console.log('=== Scenario 2 ===');
+    let dormitoryID;
+    try {
+        const { id, studentsCount } = await client.commitSettle(dormitoryID, 'biology');
+        // TODO: console response
+
+    } catch (e) {
         console.log(` ${e.message}`);
-    });
+    };
+})();    

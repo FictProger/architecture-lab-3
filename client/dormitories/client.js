@@ -8,8 +8,8 @@ const Client = (baseUrl) => {
     const client = http.Client(baseUrl);
 
     return {
-        findDormitory: () => client.get('/dormitories'),
-        commitSettle: () => client.post('/dormitories', {dormitoryID, speciality})
+        findDormitory: (specialty) => client.get('/dormitories?specialty='+ specialty),
+        commitSettle: (dormitoryID, specialty) => client.post('/dormitories/'+dormitoryID, {specialty})
     }
 
 };
