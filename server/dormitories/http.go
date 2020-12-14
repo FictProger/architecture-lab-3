@@ -15,7 +15,7 @@ type HttpHandlerFunc http.HandlerFunc
 func HttpHandler(store *Store) HttpHandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			handleListDormitories(store, rw)
+			handleRecomendDormitory(r, store, rw)
 		} else if r.Method == "POST" {
 			handleStudentCreate(r, rw, store)
 		} else {
@@ -31,7 +31,7 @@ func handleStudentCreate(r *http.Request, rw http.ResponseWriter, store *Store) 
 		tools.WriteJsonBadRequest(rw, "bad JSON payload")
 		return
 	}
-	err := store.AddStudent(stud.Specialty)
+	err := store.AddStudent(stud.DormId, stud.Specialty)
 	if err == nil {
 		tools.WriteJsonOk(rw, &stud)
 	} else {
@@ -40,8 +40,15 @@ func handleStudentCreate(r *http.Request, rw http.ResponseWriter, store *Store) 
 	}
 }
 
-func handleListDormitories(store *Store, rw http.ResponseWriter) {
-	res, err := store.ListDormitories()
+func handleRecomendDormitory(r *http.Request, store *Store, rw http.ResponseWriter) {
+	specity, ok := r.URL.Query()["specity"]
+	if !ok || len(specity) > 1 {
+		log.Println("Error query is wrong")
+		tools.WriteJsonBadRequest(rw, "wrong query")
+		return
+	}
+
+	res, err := store.RecomendDormitory(specity[0])
 	if err != nil {
 		log.Printf("Error making query to the db: %s", err)
 		tools.WriteJsonInternalError(rw)
