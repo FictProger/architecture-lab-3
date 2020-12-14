@@ -9,7 +9,7 @@ const Client = (baseUrl) => {
 
     return {
         findDormitory: (specialty) => client.get('/dormitories?specialty='+ specialty),
-        commitSettle: (dormitoryID, specialty) => client.post('/dormitories/'+dormitoryID, {specialty})
+        commitSettle: (dormitoryID, specialty) => client.post('/dormitories/', {dormitoryID, specialty})
     }
 
 };

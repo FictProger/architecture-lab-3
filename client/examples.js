@@ -1,6 +1,6 @@
 'use strict';
 
-const channels = require('./channels/client');
+const channels = require('./dormitories/client');
 
 const client = channels.Client('http://localhost:8080');
 
@@ -20,11 +20,9 @@ const client = channels.Client('http://localhost:8080');
 
     // Scenario 2: Make record where the student was settled.
     console.log('=== Scenario 2 ===');
-    let dormitoryID;
     try {
-        const { id, studentsCount } = await client.commitSettle(dormitoryID, 'biology');
-        // TODO: console response
-
+        const { id, specialty } = await client.commitSettle(dormitoryID, 'biology');
+        console.log(`Student with specialty ${specialty} was settled in dormitory ${id}`)
     } catch (e) {
         console.log(` ${e.message}`);
     };
